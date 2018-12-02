@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="leetcode,双指针," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本篇总结了两个使用「双指针」解决问题的方法。都达到了扫描一遍计算结果的效果，区别在于，一个是「相遇问题」，一个是「追及问题」。">
+<meta name="keywords" content="leetcode,双指针">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[LC11&#x2F;19&#x2F;27] Container With Most Water &#x2F; 双指针">
+<meta property="og:url" content="https://xfge.github.io/2017/09/04/container-with-most-water/index.html">
+<meta property="og:site_name" content="This is Sheffield!">
+<meta property="og:description" content="本篇总结了两个使用「双指针」解决问题的方法。都达到了扫描一遍计算结果的效果，区别在于，一个是「相遇问题」，一个是「追及问题」。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-16T15:28:57.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[LC11&#x2F;19&#x2F;27] Container With Most Water &#x2F; 双指针">
+<meta name="twitter:description" content="本篇总结了两个使用「双指针」解决问题的方法。都达到了扫描一遍计算结果的效果，区别在于，一个是「相遇问题」，一个是「追及问题」。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xfge.github.io/2017/09/04/container-with-most-water/"/>
+
+
+
+
+
+  <title>[LC11/19/27] Container With Most Water / 双指针 | This is Sheffield!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">This is Sheffield!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Code here!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xfge.github.io/2017/09/04/container-with-most-water/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheffield">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="This is Sheffield!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[LC11/19/27] Container With Most Water / 双指针</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-04T00:00:00+08:00">
+                2017-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/" itemprop="url" rel="index">
+                    <span itemprop="name">CS</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇总结了两个使用「双指针」解决问题的方法。都达到了扫描一遍计算结果的效果，区别在于，一个是「相遇问题」，一个是「追及问题」。</p>
+<a id="more"></a>
+<h1 id="11-Container-With-Most-Water"><a href="#11-Container-With-Most-Water" class="headerlink" title="11 Container With Most Water"></a>11 Container With Most Water</h1><p><a href="https://leetcode.com/problems/container-with-most-water/description/" target="_blank" rel="noopener">Container With Most Water - LeetCode</a></p>
+<blockquote>
+<p>Given n non-negative integers a1, a2, …, an, where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.<br>Note: You may not slant the container and n is at least 2.</p>
+</blockquote>
+<p>此问题用 Brute Force 方法的时间复杂度是 $O(n^2)$。</p>
+<h2 id="双指针方法"><a href="#双指针方法" class="headerlink" title="双指针方法"></a>双指针方法</h2><p>容易想到「木桶原理」。此题基于两个直觉：两条直线形成的（矩形）面积受制于较短的线；而且，如果长度一定，两条线的距离越远，所形成的面积越大。</p>
+<p>用双指针方法解决此问题：</p>
+<ol>
+<li>分别初始化<code>i</code>和<code>j</code>为<code>0</code>和<code>height.length - 1</code>；</li>
+<li>维护一个变量 <code>maxArea</code> 来存储当前最大的面积；</li>
+<li>在循环的每一步，计算当前由<code>height[i]</code>和<code>height[j]</code>组成的面积，如果比<code>maxArea</code>大，则替换它；</li>
+<li>移动 <strong>较短的线所对应的指针</strong>（<code>i</code>或<code>j</code>）到下一个位置。</li>
+</ol>
+<h2 id="正确性说明"><a href="#正确性说明" class="headerlink" title="正确性说明"></a>正确性说明</h2><p>考虑当前<code>i</code>和<code>j</code>当前指向最外侧的两线。为了最大化面积，自然想到所取两线的长度应该尽可能长。在某一时刻，假设我们移动 <strong>较长的线所对应的指针</strong> 到下一位置，<strong>不会获得任何增益</strong>（因为面积仍受制于较短的线，面积只会减小不会增加）。但是，<strong>移动较短的线的指针</strong> 尽管减少了宽度，但可能增加面积——因为通过移动较短长度的指针而获得的相对较长的height可以克服由width减小引起的面积减小。</p>
+<p><a href="https://leetcode.com/problems/container-with-most-water/discuss/6099" target="_blank" rel="noopener">LeetCode 上的一则讨论</a>给出了一种更为直观的解释。以下解释所绘制矩阵的「行」指的是第一根线（其长度用LL表示），「列」指的是第二根线（其长度用RL表示）；矩阵中，根据对称性易得，「x」所在的位置不需计算。例子中<code>n=6</code>。</p>
+<p>从<code>(1,6)</code>开始计算，<strong>如果<code>LL&lt;RL</code>，那么<code>(1,6)</code>左侧所指的面积不需计算</strong>，因为它们必将比此时计算的面积更小。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span></span><br><span class="line"><span class="number">1</span> x ------- o</span><br><span class="line"><span class="number">2</span> x x</span><br><span class="line"><span class="number">3</span> x x x</span><br><span class="line"><span class="number">4</span> x x x x</span><br><span class="line"><span class="number">5</span> x x x x x</span><br><span class="line"><span class="number">6</span> x x x x x x</span><br></pre></td></tr></table></figure></p>
+<p>下面计算<code>(2,6)</code>，此时 <strong>如果<code>LL&gt;RL</code>，那么<code>(2,6)</code>以下所指的面积不需计算</strong>。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span></span><br><span class="line"><span class="number">1</span> x ------- o</span><br><span class="line"><span class="number">2</span> x x       o</span><br><span class="line"><span class="number">3</span> x x x     |</span><br><span class="line"><span class="number">4</span> x x x x   |</span><br><span class="line"><span class="number">5</span> x x x x x |</span><br><span class="line"><span class="number">6</span> x x x x x x</span><br></pre></td></tr></table></figure></p>
+<p>不论 <code>o</code> 的走向如何，只要沿途不断找出最大值，最终只需<code>n-1</code>次计算即可求出最大面积。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span></span><br><span class="line"><span class="number">1</span> x ------- o</span><br><span class="line"><span class="number">2</span> x x - o o o</span><br><span class="line"><span class="number">3</span> x x x o | |</span><br><span class="line"><span class="number">4</span> x x x x | |</span><br><span class="line"><span class="number">5</span> x x x x x |</span><br><span class="line"><span class="number">6</span> x x x x x x</span><br></pre></td></tr></table></figure></p>
+<h1 id="19-Remove-Nth-Node-From-End-of-List"><a href="#19-Remove-Nth-Node-From-End-of-List" class="headerlink" title="19 Remove Nth Node From End of List"></a>19 Remove Nth Node From End of List</h1><p><a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list" target="_blank" rel="noopener">Remove Nth Node From End of List - LeetCode</a></p>
+<blockquote>
+<p>Given a linked list, remove the nth node from the end of list and return its head.</p>
+</blockquote>
+<p>此题刚开始看到觉得好奇怪啊：扫描一遍无论如何也无法实现同时获得链表数目以及确定删除点。然后参考了讨论版的解答。</p>
+<p>一趟搜索的实现是：初始化两个指针 <code>fast</code> 和 <code>slow</code>，其中 <code>fast - slow = n</code>。这样，经过若干次「指针后移」操作后，当 <code>fast == null</code> 时， <code>slow</code> 指针指向的就是待删除的节点。</p>
+<p>由于题中说明 <code>n</code> 总是有效的，所以无需做额外的有效性检查。</p>
+<h1 id="27-Remove-Element"><a href="#27-Remove-Element" class="headerlink" title="27 Remove Element"></a>27 Remove Element</h1><p><a href="https://leetcode.com/problems/remove-element" target="_blank" rel="noopener">Remove Element - LeetCode</a></p>
+<p>题目略去。大意是：对于输入的一个数组，删去指定的数字，使返回的数组前 $n$ 位<strong>包含</strong>数组中出了删掉数字以外的其他所有数字，顺序可以改变。</p>
+<blockquote>
+<p>Given nums = <code>[0,1,2,2,3,0,4,2]</code>, val = 2,<br>Your function should return length = 5, with the first five elements of nums containing 0, 1, 3, 0, and 4.<br>Note that the order of those five elements can be arbitrary.<br>It doesn’t matter what values are set beyond the returned length.</p>
+</blockquote>
+<p>使用双指针解决该问题时，一个直观的思路是：两个指针 <code>p</code> 和 <code>q</code> 从数组开头开始移动时，如果 <code>*q != target</code>，那么将其赋值到 <code>p</code> 所指位置。</p>
+<p>不过，利用题目中「顺序可以改变」的要求，可以对操作略作调整：<code>p</code> 指向数组开头，<code>q</code> 指向数组末尾，不断后移 <code>p</code>，如果 <code>*p == target</code> 就将 <code>*p</code> 与 <code>*q</code> 交换，并将 <code>q</code> 左移。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">removeElement</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n = nums.length;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] == val) &#123;</span><br><span class="line">            nums[i] = nums[n - <span class="number">1</span>];</span><br><span class="line">            n--;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+            <a href="/tags/双指针/" rel="tag"># 双指针</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/regular-expression-matching/" rel="next" title="[LC10] Regular Expression Matching / 递归 / 动态规划">
+                <i class="fa fa-chevron-left"></i> [LC10] Regular Expression Matching / 递归 / 动态规划
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/05/longest-common-prefix/" rel="prev" title="[LC14] Longest Common Prefix / 二分查找 / 分治">
+                [LC14] Longest Common Prefix / 二分查找 / 分治 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Sheffield</p>
+              <p class="site-description motion-element" itemprop="description">Sheffield Ge 的技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xfge" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:xfge.cn@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#11-Container-With-Most-Water"><span class="nav-text">11 Container With Most Water</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#双指针方法"><span class="nav-text">双指针方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正确性说明"><span class="nav-text">正确性说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#19-Remove-Nth-Node-From-End-of-List"><span class="nav-text">19 Remove Nth Node From End of List</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#27-Remove-Element"><span class="nav-text">27 Remove Element</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheffield</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

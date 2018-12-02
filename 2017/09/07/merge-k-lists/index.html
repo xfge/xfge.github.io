@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="leetcode,分治," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本篇梳理「归并多个有序列表」问题。求和问题是指一类从数组中找出 K 个数满足其和为给定整数的问题。">
+<meta name="keywords" content="leetcode,分治">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[LC21&#x2F;23] Merge k Sorted Lists &#x2F; 分治">
+<meta property="og:url" content="https://xfge.github.io/2017/09/07/merge-k-lists/index.html">
+<meta property="og:site_name" content="This is Sheffield!">
+<meta property="og:description" content="本篇梳理「归并多个有序列表」问题。求和问题是指一类从数组中找出 K 个数满足其和为给定整数的问题。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xfge.github.io/images/2017/10/k_lists_divide_and_conquer.png">
+<meta property="og:updated_time" content="2018-10-16T15:28:57.822Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[LC21&#x2F;23] Merge k Sorted Lists &#x2F; 分治">
+<meta name="twitter:description" content="本篇梳理「归并多个有序列表」问题。求和问题是指一类从数组中找出 K 个数满足其和为给定整数的问题。">
+<meta name="twitter:image" content="https://xfge.github.io/images/2017/10/k_lists_divide_and_conquer.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xfge.github.io/2017/09/07/merge-k-lists/"/>
+
+
+
+
+
+  <title>[LC21/23] Merge k Sorted Lists / 分治 | This is Sheffield!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">This is Sheffield!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Code here!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xfge.github.io/2017/09/07/merge-k-lists/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheffield">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="This is Sheffield!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[LC21/23] Merge k Sorted Lists / 分治</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-07T00:00:00+08:00">
+                2017-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/" itemprop="url" rel="index">
+                    <span itemprop="name">CS</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇梳理「归并多个有序列表」问题。求和问题是指一类从数组中找出 K 个数满足其和为给定整数的问题。</p>
+<a id="more"></a>
+<h2 id="21-Merge-2-Sorted-Lits"><a href="#21-Merge-2-Sorted-Lits" class="headerlink" title="21 Merge 2 Sorted Lits"></a>21 Merge 2 Sorted Lits</h2><p><a href="https://leetcode.com/problems/merge-two-sorted-lists" target="_blank" rel="noopener">Merge Two Sorted Lists - LeetCode</a></p>
+<blockquote>
+<p>Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.</p>
+</blockquote>
+<p>显然，可以通过两个指针分别指向链表头，依次比较并移动指针来实现归并。这是一种基本思路，实现起来容易但有点繁琐。</p>
+<h3 id="用递归方法解决"><a href="#用递归方法解决" class="headerlink" title="用递归方法解决"></a>用递归方法解决</h3><p>递归方法写出的代码就简洁多了。递归终止条件是 「<code>l1 == null</code> 或者 <code>l2 == null</code>」，其他情况只需将递归比较所返回的结果置为 <code>[l1|l2].next</code> 即可。</p>
+<p>这种实现并不是<a href="https://zh.wikipedia.org/wiki/尾调用" target="_blank" rel="noopener">尾递归</a>，因此当链表规模过大的时候可能导致「栈溢出」。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">mergeTwoLists</span><span class="params">(ListNode *l1, ListNode *l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l1 == <span class="literal">NULL</span>) <span class="keyword">return</span> l2;</span><br><span class="line">        <span class="keyword">if</span>(l2 == <span class="literal">NULL</span>) <span class="keyword">return</span> l1;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(l1-&gt;val &lt; l2-&gt;val) &#123;</span><br><span class="line">            l1-&gt;next = mergeTwoLists(l1-&gt;next, l2);</span><br><span class="line">            <span class="keyword">return</span> l1;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            l2-&gt;next = mergeTwoLists(l2-&gt;next, l1);</span><br><span class="line">            <span class="keyword">return</span> l2;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="23-Merge-k-Sorted-Lists"><a href="#23-Merge-k-Sorted-Lists" class="headerlink" title="23 Merge k Sorted Lists"></a>23 Merge k Sorted Lists</h2><p><a href="https://leetcode.com/problems/merge-k-sorted-lists" target="_blank" rel="noopener">Merge k Sorted Lists - LeetCode</a></p>
+<h3 id="1-Brute-Force"><a href="#1-Brute-Force" class="headerlink" title="1 Brute Force"></a>1 Brute Force</h3><p>Brute Force 方法通过遍历 $k$ 个列表的所有数字并排序来完成合并。时间复杂度是 $O(N \log{N})$；空间复杂度是 $O(N)$。其中，$N$ 是所有节点的数目。</p>
+<h3 id="2-1-在-k-个数中找到最小数"><a href="#2-1-在-k-个数中找到最小数" class="headerlink" title="2-1 在 $k$ 个数中找到最小数"></a>2-1 在 $k$ 个数中找到最小数</h3><p>对于 $k$ 个链表的首位数字，找出它们中的最小数；将该最小数附加到最终形成的链表后面，并将所在位置向后移一位。</p>
+<p>时间复杂度是 $O(kN)$；空间复杂度是 $O(N)$。</p>
+<h3 id="2-2-上述方法的优先队列实现"><a href="#2-2-上述方法的优先队列实现" class="headerlink" title="2-2 上述方法的优先队列实现"></a>2-2 上述方法的优先队列实现</h3><p>将方法 2 中的 $k$ 个首位数字放到优先队列中。这样，每次 “pop” 和 “insert” 操作所需时间是 $O(\log{k})$；而「确定最小数」所需时间是 $O(1)$，因为这个树就是优先队列中的第一个数字。</p>
+<h3 id="3-1-依次合并两个链表"><a href="#3-1-依次合并两个链表" class="headerlink" title="3-1 依次合并两个链表"></a>3-1 依次合并两个链表</h3><p>重复 $k-1$ 次「合并两个链表」的操作。</p>
+<p>时间复杂度的计算公式是 $O \left ( \displaystyle\sum_{i=1}^{k-1} \left ( i * \frac{N}{k} + \frac{N}{k} \right )  \right) = O(kN)$。</p>
+<h3 id="3-2-上述方法的分治实现"><a href="#3-2-上述方法的分治实现" class="headerlink" title="3-2 上述方法的分治实现"></a>3-2 上述方法的分治实现</h3><p>上述方法对于已经完成合并的链表中的元素，进行了多次（重复的）比较。分治方法减少比较的次数。</p>
+<ol>
+<li>将<strong>每对</strong>链表合并；</li>
+<li>第一次配对后，$k$ 个链表被合并为 $k/2$ 个长度为 $2N/k$ 的链表。接下来，$k/4$，$k/8$……</li>
+<li>重复这个过程直到得到合并后的唯一链表。</li>
+</ol>
+<div align="center"><img src="/images/2017/10/k_lists_divide_and_conquer.png" width="70%"></div>
+
+<p>分治方法将时间复杂度减小到 $O(N \log{k})$。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+            <a href="/tags/分治/" rel="tag"># 分治</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/06/3sum/" rel="next" title="[LC 1/15/16/18] K-Sum">
+                <i class="fa fa-chevron-left"></i> [LC 1/15/16/18] K-Sum
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/08/generate-parentheses/" rel="prev" title="[LC22] Generate Parentheses / 回溯">
+                [LC22] Generate Parentheses / 回溯 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Sheffield</p>
+              <p class="site-description motion-element" itemprop="description">Sheffield Ge 的技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xfge" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:xfge.cn@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#21-Merge-2-Sorted-Lits"><span class="nav-text">21 Merge 2 Sorted Lits</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用递归方法解决"><span class="nav-text">用递归方法解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-Merge-k-Sorted-Lists"><span class="nav-text">23 Merge k Sorted Lists</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Brute-Force"><span class="nav-text">1 Brute Force</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-在-k-个数中找到最小数"><span class="nav-text">2-1 在 $k$ 个数中找到最小数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-上述方法的优先队列实现"><span class="nav-text">2-2 上述方法的优先队列实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-依次合并两个链表"><span class="nav-text">3-1 依次合并两个链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-上述方法的分治实现"><span class="nav-text">3-2 上述方法的分治实现</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheffield</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

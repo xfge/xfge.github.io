@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="leetcode,动态规划,递归,字符串," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Regular Expression Matching - LeetCode  Implement regular expression matching with support for &amp;#39;.&amp;#39; and &amp;#39;*&amp;#39;.">
+<meta name="keywords" content="leetcode,动态规划,递归,字符串">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[LC10] Regular Expression Matching &#x2F; 递归 &#x2F; 动态规划">
+<meta property="og:url" content="https://xfge.github.io/2017/09/03/regular-expression-matching/index.html">
+<meta property="og:site_name" content="This is Sheffield!">
+<meta property="og:description" content="Regular Expression Matching - LeetCode  Implement regular expression matching with support for &amp;#39;.&amp;#39; and &amp;#39;*&amp;#39;.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xfge.github.io/images/2017/10/regular-expression-matching-dp-table.png">
+<meta property="og:updated_time" content="2018-10-16T15:28:57.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[LC10] Regular Expression Matching &#x2F; 递归 &#x2F; 动态规划">
+<meta name="twitter:description" content="Regular Expression Matching - LeetCode  Implement regular expression matching with support for &amp;#39;.&amp;#39; and &amp;#39;*&amp;#39;.">
+<meta name="twitter:image" content="https://xfge.github.io/images/2017/10/regular-expression-matching-dp-table.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xfge.github.io/2017/09/03/regular-expression-matching/"/>
+
+
+
+
+
+  <title>[LC10] Regular Expression Matching / 递归 / 动态规划 | This is Sheffield!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">This is Sheffield!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Code here!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xfge.github.io/2017/09/03/regular-expression-matching/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheffield">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="This is Sheffield!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[LC10] Regular Expression Matching / 递归 / 动态规划</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T00:00:00+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/" itemprop="url" rel="index">
+                    <span itemprop="name">CS</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://leetcode.com/problems/regular-expression-matching/description/" target="_blank" rel="noopener">Regular Expression Matching - LeetCode</a></p>
+<blockquote>
+<p>Implement regular expression matching with support for <code>&#39;.&#39;</code> and <code>&#39;*&#39;</code>.</p>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&apos;.&apos; Matches any single character.</span><br><span class="line">&apos;*&apos; Matches zero or more of the preceding element.</span><br><span class="line"></span><br><span class="line">The matching should cover the entire input string (not partial).</span><br><span class="line"></span><br><span class="line">The function prototype should be:</span><br><span class="line">bool isMatch(const char *s, const char *p)</span><br><span class="line"></span><br><span class="line">Some examples:</span><br><span class="line">isMatch(&quot;aa&quot;,&quot;a&quot;) → false</span><br><span class="line">isMatch(&quot;aa&quot;,&quot;aa&quot;) → true</span><br><span class="line">isMatch(&quot;aaa&quot;,&quot;aa&quot;) → false</span><br><span class="line">isMatch(&quot;aa&quot;, &quot;a*&quot;) → true</span><br><span class="line">isMatch(&quot;aa&quot;, &quot;.*&quot;) → true</span><br><span class="line">isMatch(&quot;ab&quot;, &quot;.*&quot;) → true</span><br><span class="line">isMatch(&quot;aab&quot;, &quot;c*a*b&quot;) → true</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="1-用递归解决"><a href="#1-用递归解决" class="headerlink" title="1. 用递归解决"></a>1. 用递归解决</h2><h3 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h3><p>记得大二的时候高级程序设计做过一次这样的作业。当时做了好久没做出来，后来看了答案才一知半解。主要原因是对「递归」方法掌握得不好，不知道如何使用好递归。</p>
+<p>事实上这次也是提交了好多次才通过，不过看到答案给出递归和动态规划两种解决方法，觉得这道题很有参考价值。</p>
+<p>我的思路是这样的，在函数体内，分别考虑 <code>p</code> 不同长度对应的比较依据。比较时只考虑 <code>p</code> 的前1位或前2位（如果第2位是<code>&#39;*&#39;</code>），其他情况调用递归函数来比较。</p>
+<ol>
+<li><code>p</code> 长度为0时，只有 <code>s.length() == 0</code> 才成立；</li>
+<li><code>p</code> 长度为1时，要么 <code>p == &#39;.&#39;</code>，要么<code>p == s</code>；</li>
+<li><code>p</code> 长度大于1时，加入对 <code>&#39;*&#39;</code> 的考虑：<ol>
+<li>如果第2位是<code>&#39;*&#39;</code>，那么需要比较<code>p</code>和<code>s</code>的第1位（注意排除<code>s</code>长度为0的情况），如果一致还需截断<code>s</code>的第1位再比较第2位……循环结构的停止条件是“不再匹配或<code>s</code>长度为0”。</li>
+<li>如果第2位不是<code>&#39;*&#39;</code>，那么直接比较<code>p</code>和<code>s</code>的第1位并调用递归函数比较字符串剩余部分即可。</li>
+</ol>
+</li>
+</ol>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMatch</span><span class="params">(String s, String p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (p.length() == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> s.length() == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p.length() == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> s.length() == <span class="number">1</span> &amp;&amp; (p.charAt(<span class="number">0</span>) == <span class="string">'.'</span> || p.charAt(<span class="number">0</span>) == s.charAt(<span class="number">0</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p.charAt(<span class="number">1</span>) != <span class="string">'*'</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> s.length() != <span class="number">0</span> &amp;&amp; (p.charAt(<span class="number">0</span>) == <span class="string">'.'</span> || p.charAt(<span class="number">0</span>) == s.charAt(<span class="number">0</span>)) &amp;&amp; isMatch(s.substring(<span class="number">1</span>), p.substring(<span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (s.length() != <span class="number">0</span> &amp;&amp; (p.charAt(<span class="number">0</span>) == <span class="string">'.'</span> || p.charAt(<span class="number">0</span>) == s.charAt(<span class="number">0</span>))) &#123;</span><br><span class="line">            <span class="keyword">if</span> (isMatch(s, p.substring(<span class="number">2</span>))) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                s = s.substring(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> isMatch(s, p.substring(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>悲伤的是，使用递归的代码效率通常有些低，只超过7.27%。</p>
+<h2 id="2-递归：语句精炼之道"><a href="#2-递归：语句精炼之道" class="headerlink" title="2. 递归：语句精炼之道"></a>2. 递归：语句精炼之道</h2><p>LeetCode 提供的参考解答所提供的第一个方法就是递归。这里将其摘抄过来以说明其中简化了一些冗余的语句，使整体的代码风格更加整洁（neat）。学习目标！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMatch</span><span class="params">(String s, String p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (p.isEmpty()) <span class="keyword">return</span> s.isEmpty();</span><br><span class="line">    <span class="keyword">boolean</span> first_match = (!s.isEmpty() &amp;&amp;</span><br><span class="line">            (p.charAt(<span class="number">0</span>) == s.charAt(<span class="number">0</span>) || p.charAt(<span class="number">0</span>) == <span class="string">'.'</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (p.length() &gt;= <span class="number">2</span> &amp;&amp; p.charAt(<span class="number">1</span>) == <span class="string">'*'</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> (isMatch(s, p.substring(<span class="number">2</span>)) ||</span><br><span class="line">                (first_match &amp;&amp; isMatch(s.substring(<span class="number">1</span>), p)));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> first_match &amp;&amp; isMatch(s.substring(<span class="number">1</span>), p.substring(<span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意 <code>return (isMatch(s, p.substring(2)) || (first_match &amp;&amp; isMatch(s.substring(1), p)));</code> 一句的判断省略的我写的代码中的很多语句。</p>
+<p>其思考依据是：当通配符 <code>&#39;*&#39;</code> 出现时，只能出现在 <code>p</code> 的第二个位置，我们考虑直接 <strong>忽略这个部分，或者删掉（<code>s</code>中的）已匹配的1个字符</strong>。经过这些操作，在<code>s</code>和<code>p</code>的剩余部分仍然匹配的（通过递归匹配），则认为原始字符串匹配。</p>
+<h2 id="3-动态规划"><a href="#3-动态规划" class="headerlink" title="3. 动态规划"></a>3. 动态规划</h2><h3 id="求解公式和表格"><a href="#求解公式和表格" class="headerlink" title="求解公式和表格"></a>求解公式和表格</h3><p>理解了递归方法后，动态规划中的大部分逻辑也就随之得到了。但动态规划的极大优势就是能够在 $O(n^2)$ 的时间复杂度内解决问题；相比之下，递归方法的时间复杂度是 $O((T+P)2^{T+\frac{P}{2}})$（分析参考 <a href="https://leetcode.com/problems/regular-expression-matching/solution/" target="_blank" rel="noopener">LeetCode 的解答</a>）</p>
+<p>此问题的递归公式由一个二维表格求解。二维表格大小是<code>string.length + 1</code> $\times$ <code>pattern.length + 1</code>。其中第 $i$ 行第 $j$ 列表示的含义是：<strong><code>string[1..i]</code> 和 <code>pattern[1..j]</code> 是否匹配</strong>。 求解公式是：</p>
+<p>$$<br>T[i][j] = \begin{cases}<br>T[i-1][j-1] &amp; \text{ if s[i] == p[j] or p[j] == ‘.’} \\<br>T[i][j-2] &amp; \text{ if p[j] == ‘*‘} \\<br>T[i-1][j] &amp; \text{ if p[j] == ‘*‘ and s[i] == p[j-1] or p[j-1] == ‘.’} \\<br>\text{false} &amp; \text{ otherwise }<br>\end{cases}<br>$$</p>
+<p>下图是以 <code>s = &quot;xaabyc&quot;</code> 和 <code>p = &quot;xa*b.c&quot;</code> 例子所对应的DP表格。尝试在绘制表格的过程中总结出求解公式。</p>
+<p><img src="/images/2017/10/regular-expression-matching-dp-table.png" width="40%"></p>
+<p>值得一提的是，表格中第0列均为False，但第0行是不一定均为False的，因为空串与<code>&quot;a*b*&quot;</code>也是匹配的！</p>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">matchRegex</span><span class="params">(<span class="keyword">char</span>[] text, <span class="keyword">char</span>[] pattern)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> T[][] = <span class="keyword">new</span> <span class="keyword">boolean</span>[text.length + <span class="number">1</span>][pattern.length + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    T[<span class="number">0</span>][<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line">    <span class="comment">//Deals with patterns like a* or a*b* or a*b*c*</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; T[<span class="number">0</span>].length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (pattern[i-<span class="number">1</span>] == <span class="string">'*'</span>) &#123;</span><br><span class="line">            T[<span class="number">0</span>][i] = T[<span class="number">0</span>][i - <span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; T.length; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; T[<span class="number">0</span>].length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (pattern[j - <span class="number">1</span>] == <span class="string">'.'</span> || pattern[j - <span class="number">1</span>] == text[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                T[i][j] = T[i-<span class="number">1</span>][j-<span class="number">1</span>];</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pattern[j - <span class="number">1</span>] == <span class="string">'*'</span>)  &#123;</span><br><span class="line">                T[i][j] = T[i][j - <span class="number">2</span>];</span><br><span class="line">                <span class="keyword">if</span> (pattern[j-<span class="number">2</span>] == <span class="string">'.'</span> || pattern[j - <span class="number">2</span>] == text[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                    T[i][j] = T[i][j] | T[i - <span class="number">1</span>][j];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                T[i][j] = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> T[text.length][pattern.length];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>动态规划部分的实现和代码来源于 <a href="Tushar Roy 的讲解视频">https://youtu.be/l3hda49XcDE</a>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="如何写出DP表达式？"><a href="#如何写出DP表达式？" class="headerlink" title="如何写出DP表达式？"></a>如何写出DP表达式？</h3><ol>
+<li>确定问题子结构。</li>
+<li>可以先根据一个简单例子试着画表格，在画表格的过程中仔细考虑填写每一项可以由已求得结果（表格中已填项）得到什么信息。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
+          
+            <a href="/tags/递归/" rel="tag"># 递归</a>
+          
+            <a href="/tags/字符串/" rel="tag"># 字符串</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/02/palindrome/" rel="next" title="[LC5/9] Palindrome Problems / 动态规划">
+                <i class="fa fa-chevron-left"></i> [LC5/9] Palindrome Problems / 动态规划
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/04/container-with-most-water/" rel="prev" title="[LC11/19/27] Container With Most Water / 双指针">
+                [LC11/19/27] Container With Most Water / 双指针 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Sheffield</p>
+              <p class="site-description motion-element" itemprop="description">Sheffield Ge 的技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xfge" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:xfge.cn@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-用递归解决"><span class="nav-text">1. 用递归解决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#我的思路"><span class="nav-text">我的思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-递归：语句精炼之道"><span class="nav-text">2. 递归：语句精炼之道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-动态规划"><span class="nav-text">3. 动态规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#求解公式和表格"><span class="nav-text">求解公式和表格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现-1"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何写出DP表达式？"><span class="nav-text">如何写出DP表达式？</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheffield</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

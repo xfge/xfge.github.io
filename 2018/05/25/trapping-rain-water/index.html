@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="leetcode,动态规划,双指针," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这两题分别有不同的解法，但它们都可以用一种基于栈的方法来实现一次遍历计算结果。这种方法刚看到的时候不是很理解，思考后总结出其核心思想——确定迭代的每个步骤的「子任务」。这个选取的子任务通过循环迭代计算后，就可综合为最终结果（例如取最大/小值）。">
+<meta name="keywords" content="leetcode,动态规划,双指针">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[LC42&#x2F;84] Trapping Rain Water &#x2F; Largest Rectangle in Histogram &#x2F; 动态规划 &#x2F; 双指针">
+<meta property="og:url" content="https://xfge.github.io/2018/05/25/trapping-rain-water/index.html">
+<meta property="og:site_name" content="This is Sheffield!">
+<meta property="og:description" content="这两题分别有不同的解法，但它们都可以用一种基于栈的方法来实现一次遍历计算结果。这种方法刚看到的时候不是很理解，思考后总结出其核心思想——确定迭代的每个步骤的「子任务」。这个选取的子任务通过循环迭代计算后，就可综合为最终结果（例如取最大/小值）。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xfge.github.io/images/2018/05/rain-water-trap.png">
+<meta property="og:image" content="https://xfge.github.io/images/2018/05/rain-water-dp.png">
+<meta property="og:image" content="https://xfge.github.io/images/2018/05/rain-water-2-pointers.png">
+<meta property="og:image" content="https://xfge.github.io/images/2018/05/histogram-area.png">
+<meta property="og:updated_time" content="2018-10-16T15:28:57.825Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[LC42&#x2F;84] Trapping Rain Water &#x2F; Largest Rectangle in Histogram &#x2F; 动态规划 &#x2F; 双指针">
+<meta name="twitter:description" content="这两题分别有不同的解法，但它们都可以用一种基于栈的方法来实现一次遍历计算结果。这种方法刚看到的时候不是很理解，思考后总结出其核心思想——确定迭代的每个步骤的「子任务」。这个选取的子任务通过循环迭代计算后，就可综合为最终结果（例如取最大/小值）。">
+<meta name="twitter:image" content="https://xfge.github.io/images/2018/05/rain-water-trap.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xfge.github.io/2018/05/25/trapping-rain-water/"/>
+
+
+
+
+
+  <title>[LC42/84] Trapping Rain Water / Largest Rectangle in Histogram / 动态规划 / 双指针 | This is Sheffield!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">This is Sheffield!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Code here!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xfge.github.io/2018/05/25/trapping-rain-water/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheffield">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="This is Sheffield!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[LC42/84] Trapping Rain Water / Largest Rectangle in Histogram / 动态规划 / 双指针</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-25T00:00:00+08:00">
+                2018-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/" itemprop="url" rel="index">
+                    <span itemprop="name">CS</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这两题分别有不同的解法，但它们都可以用一种基于栈的方法来实现一次遍历计算结果。这种方法刚看到的时候不是很理解，思考后总结出其核心思想——确定迭代的每个步骤的「子任务」。这个选取的子任务通过循环迭代计算后，就可综合为最终结果（例如取最大/小值）。</p>
+<a id="more"></a>
+<h1 id="42-Trapping-Rain-Water"><a href="#42-Trapping-Rain-Water" class="headerlink" title="42 Trapping Rain Water"></a>42 Trapping Rain Water</h1><p><a href="https://leetcode.com/problems/trapping-rain-water/description/" target="_blank" rel="noopener">Trapping Rain Water - LeetCode</a></p>
+<p>Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.</p>
+<div align="center"><img src="/images/2018/05/rain-water-trap.png" width="60%"></div>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [0,1,0,2,1,0,1,3,2,1,2,1]</span><br><span class="line">Output: 6</span><br></pre></td></tr></table></figure>
+<h2 id="一开始的错误考虑"><a href="#一开始的错误考虑" class="headerlink" title="一开始的错误考虑"></a>一开始的错误考虑</h2><p>因为联想到之前的 Container With Most Water，该题是每个坐标对应一根线（杆），找到能够容纳更多水的两个线框包围的区域。考虑到一个直观的想法：在每一「行」，找到最左端点和最右端点，中间的空白区域即为容纳水的部分。</p>
+<p>这个算法的时间复杂度是 $O(n \times maxHeight)$。在最后一个较多数据的测试样例上超时了。</p>
+<p>本题给出的参考答案思路比较清楚，且很容易能想到通过动态规划来<strong>避免重复计算</strong>。</p>
+<h2 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute Force"></a>Brute Force</h2><p>从每一个坐标位置（<code>i = 0..n-1</code>）来看，每个坐标（视为墙壁）上水的多少取决于左边最高墙壁<strong>或</strong>右边最高墙壁的高度。注意，根据木桶原理，取稍低的那一个的高度 <code>maxHeight</code>，水的容量等于 <code>maxHeight - height[i]</code>。</p>
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p>可以发现，上述思路从 <code>i</code> 迭代到 <code>i+1</code> 时，重复考虑了 <code>0..i</code> 的长度，且可以利用 <code>leftMax[i-1]</code> 来得到 <code>leftMax[i] = max(leftMax[i-1], height[i])</code>。右侧同理。这就是动态规划的思想。</p>
+<div align="center"><img src="/images/2018/05/rain-water-dp.png" width="100%"></div>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; height)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(height == null) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> size = height.size();</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; left_max(size), right_max(size);</span><br><span class="line">    left_max[<span class="number">0</span>] = height[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; size; i++) &#123;</span><br><span class="line">        left_max[i] = max(height[i], left_max[i - <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    right_max[size - <span class="number">1</span>] = height[size - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = size - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        right_max[i] = max(height[i], right_max[i + <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; size - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        ans += min(left_max[i], right_max[i]) - height[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h2><p>回顾「动态规划」一节的图示，可以发现红色部分和绿色部分的区别在于：当 <code>right_max[i]&gt;left_max[i]</code> 时（坐标位置为0-6），容水量取决于 <code>left_max[i]</code>，右侧相反。</p>
+<p>下图能更直观地显示这一区别。图中，中间两个位置分别代表 <code>i</code> 和 <code>j</code>，最左侧和最右侧分别指向的是 <code>i</code> 的左侧最大值 <code>leftMax</code> 和 <code>j</code> 的右侧最大值 <code>rightMax</code>。容易得到结论：如果如图中所示 <code>leftMax &lt; rightMax</code>，那么 <code>i</code> 位置的容水量取决于 <code>leftMax</code>，为 <code>leftMax - height[i]</code>，此时 <code>j</code> 位置的容水量不能确定；反之。</p>
+<div align="center"><img src="/images/2018/05/rain-water-2-pointers.png" width="60%"></div>
+
+<p>左右各设一个指针，向中间靠拢。用 <code>leftMax</code> 和 <code>rightMax</code> 的大小关系作为处理 <code>i</code> 还是 <code>j</code> 的判断依据，最后两者都将往最高处靠拢。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> j = height.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> leftMax = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> rightMax = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt;= j) &#123;</span><br><span class="line">        leftMax = Math.max(leftMax, height[i]);</span><br><span class="line">        rightMax = Math.max(rightMax, height[j]);</span><br><span class="line">        <span class="keyword">if</span> (leftMax &lt; rightMax) &#123;</span><br><span class="line">            max += (leftMax - height[i]);</span><br><span class="line">            i++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            max += (rightMax - height[j]);</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="84-Largest-Rectangle-in-Histogram"><a href="#84-Largest-Rectangle-in-Histogram" class="headerlink" title="84 Largest Rectangle in Histogram"></a>84 Largest Rectangle in Histogram</h1><p><a href="https://leetcode.com/problems/largest-rectangle-in-histogram/description/" target="_blank" rel="noopener">Largest Rectangle in Histogram - LeetCode</a></p>
+<p>Given n non-negative integers representing the histogram’s bar height where the width of each bar is 1, find the area of largest rectangle in the histogram.</p>
+<div align="center"><img src="/images/2018/05/histogram-area.png" width="30%"></div>
+
+<p>The largest rectangle is shown in the shaded area, which has area = <code>10</code> unit.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [2,1,5,6,2,3]</span><br><span class="line">Output: 10</span><br></pre></td></tr></table></figure>
+<h2 id="选择用于迭代步计算的子任务"><a href="#选择用于迭代步计算的子任务" class="headerlink" title="选择用于迭代步计算的子任务"></a>选择用于迭代步计算的子任务</h2><p>下面给出一种基于栈的解法，但<strong>使用栈不是最终目的</strong>，而是为了保存一些计算必要的中间结果。</p>
+<p>循环的每个步骤，其实都在完成一个子任务。例如，本题的双重循环（Brute Force）解法将会在第一层的每次循环后，计算出第 $0..i$ 条 bar 为左边界的矩形面积的最小值。那么，当循环结束后，所有矩形面积的最小值就顺势推出了。</p>
+<p>既然要算以 <code>x</code> 为矩形中最低的一条时矩形的面积，那就要找到这个矩形的左右边界（记为 <code>lb</code>, <code>rb</code>）。边界情况是： <code>lb</code> 相邻左边的一条长度比 <code>x</code> 小，<code>rb</code> 相邻右边的一条长度比 <code>x</code> 小。换句话说，就是在计算时需要知道这两条 bar 的索引（记为 <code>fli</code>, <code>fri</code>）。在这种基于栈的解法中，由于每条 bar 只进栈一次，那么当它出出栈的时候计算以它为最短 bar 所形成的矩形面积。循环标志 <code>i</code> 表示在这一循环内分别考虑所有以 <code>i</code> 为右边界的矩形。</p>
+<p>通过「栈」来保存并获得这些信息：在从左到右地遍历 bar 时，每个 bar 仅进栈一次。当<strong>当前 bar 的长度大于栈顶元素所表示的 bar 的长度</strong>时，栈顶元素 <code>top</code> 出栈。这时，将 <code>top</code> 视作最短 bar，且当前循环的索引 <code>i</code> 代表它对应的 <code>fri</code>，原先栈中 <code>top</code> 之前的元素代表 <code>fli</code>。</p>
+<p>这样，当循环结束后，也能够得到所有矩形面积的最小值。因为，<strong>该结果必定包含在循环的计算中</strong>。</p>
+<p>具体算法如下：</p>
+<ol>
+<li>建栈。</li>
+<li>在每次循环中，<code>i=0..n-1</code>：<ol>
+<li>如果栈为空或者 <code>hist[i] &gt;= hist[stack.top]</code>，<code>i</code> 进栈。</li>
+<li>否则不断地将栈顶元素出栈只要栈顶元素更大，它代表的 bar 记为 <code>hist[tp]</code>。计算以 <code>hist[tp]</code> 为最短 bar 的矩形面积。<code>fli</code> 对应栈中 <code>tp</code> 的前一个元素，<code>fri</code> 对应当前循环的索引 <code>i</code>。</li>
+</ol>
+</li>
+<li>如果栈不为空, 那么依次出栈并且都要重复上述循环中第二个步骤。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = height.length;</span><br><span class="line">        Stack&lt;Integer&gt; s = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">int</span> maxArea = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= len; i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> h = (i == len ? <span class="number">0</span> : height[i]);</span><br><span class="line">            <span class="keyword">if</span>(s.isEmpty() || h &gt;= height[s.peek()])&#123;   <span class="comment">// 注意此处的符号</span></span><br><span class="line">                s.push(i);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">int</span> tp = s.pop();</span><br><span class="line">                maxArea = Math.max(maxArea, height[tp] * (s.isEmpty() ? i : i - <span class="number">1</span> - s.peek()));</span><br><span class="line">                i--;    <span class="comment">// 注意</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxArea;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Trapping Rain Water 问题可以依葫芦画瓢给出基于栈的解法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="keyword">int</span>[] A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (A==<span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        Stack&lt;Integer&gt; s = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, maxWater = <span class="number">0</span>, maxBotWater = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; A.length)&#123;</span><br><span class="line">            <span class="keyword">if</span> (s.isEmpty() || A[i] &lt;= A[s.peek()])&#123;</span><br><span class="line">                s.push(i++);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">int</span> bot = s.pop();</span><br><span class="line">                maxBotWater = s.isEmpty() ? <span class="number">0</span> : (Math.min(A[s.peek()], A[i])-A[bot]) * (i - <span class="number">1</span> - s.peek());</span><br><span class="line">                maxWater += maxBotWater;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxWater;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这是该解法的另一种写法。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
+          
+            <a href="/tags/双指针/" rel="tag"># 双指针</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/08/sudoku-solver/" rel="next" title="[LC37/39/40/46-47] 用回溯算法解决问题">
+                <i class="fa fa-chevron-left"></i> [LC37/39/40/46-47] 用回溯算法解决问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/12/maximum-subarray/" rel="prev" title="[LC53] Maximum Subarray / 动态规划 / 分治">
+                [LC53] Maximum Subarray / 动态规划 / 分治 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Sheffield</p>
+              <p class="site-description motion-element" itemprop="description">Sheffield Ge 的技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xfge" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:xfge.cn@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#42-Trapping-Rain-Water"><span class="nav-text">42 Trapping Rain Water</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一开始的错误考虑"><span class="nav-text">一开始的错误考虑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Brute-Force"><span class="nav-text">Brute Force</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态规划"><span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双指针"><span class="nav-text">双指针</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#84-Largest-Rectangle-in-Histogram"><span class="nav-text">84 Largest Rectangle in Histogram</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#选择用于迭代步计算的子任务"><span class="nav-text">选择用于迭代步计算的子任务</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheffield</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

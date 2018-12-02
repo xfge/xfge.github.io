@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="leetcode,动态规划,贪心," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="给定一个数组，每个元素表示该位置可以跳跃的最远长度。从数组的第一个元素开始起跳，确定跳到最后一个元素所需的最小步数/确定能否跳到最后一个元素。">
+<meta name="keywords" content="leetcode,动态规划,贪心">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[LC45&#x2F;55] Jump Game &#x2F; 动态规划 &#x2F; 贪心 &#x2F; BFS">
+<meta property="og:url" content="https://xfge.github.io/2018/06/13/jump-game/index.html">
+<meta property="og:site_name" content="This is Sheffield!">
+<meta property="og:description" content="给定一个数组，每个元素表示该位置可以跳跃的最远长度。从数组的第一个元素开始起跳，确定跳到最后一个元素所需的最小步数/确定能否跳到最后一个元素。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-16T15:28:57.826Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[LC45&#x2F;55] Jump Game &#x2F; 动态规划 &#x2F; 贪心 &#x2F; BFS">
+<meta name="twitter:description" content="给定一个数组，每个元素表示该位置可以跳跃的最远长度。从数组的第一个元素开始起跳，确定跳到最后一个元素所需的最小步数/确定能否跳到最后一个元素。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xfge.github.io/2018/06/13/jump-game/"/>
+
+
+
+
+
+  <title>[LC45/55] Jump Game / 动态规划 / 贪心 / BFS | This is Sheffield!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">This is Sheffield!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Code here!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xfge.github.io/2018/06/13/jump-game/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sheffield">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="This is Sheffield!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[LC45/55] Jump Game / 动态规划 / 贪心 / BFS</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-13T00:00:00+08:00">
+                2018-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/" itemprop="url" rel="index">
+                    <span itemprop="name">CS</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>给定一个数组，每个元素表示该位置可以跳跃的最远长度。从数组的第一个元素开始起跳，确定跳到最后一个元素所需的最小步数/确定能否跳到最后一个元素。</p>
+<a id="more"></a>
+<h2 id="确定跳到最后一个元素的最小步数"><a href="#确定跳到最后一个元素的最小步数" class="headerlink" title="确定跳到最后一个元素的最小步数"></a>确定跳到最后一个元素的最小步数</h2><p><a href="https://leetcode.com/problems/jump-game-ii/description/" target="_blank" rel="noopener">Jump Game II - LeetCode</a></p>
+<blockquote>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.<br>Each element in the array represents your maximum jump length at that position.<br>Your goal is to reach the last index in the minimum number of jumps.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input: [2,3,1,1,4]</span><br><span class="line">Output: 2</span><br><span class="line">Explanation: The minimum number of jumps to reach the last index is 2.</span><br><span class="line">    Jump 1 step from index 0 to 1, then 3 steps to the last index.</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><strong>Note:</strong> You can assume that you can always reach the last index.</p>
+<h3 id="应用-BFS-算法"><a href="#应用-BFS-算法" class="headerlink" title="应用 BFS 算法"></a>应用 BFS 算法</h3><h3 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h3><h2 id="确定能否跳到最后一个元素"><a href="#确定能否跳到最后一个元素" class="headerlink" title="确定能否跳到最后一个元素"></a>确定能否跳到最后一个元素</h2><p><a href="https://leetcode.com/problems/jump-game/description/" target="_blank" rel="noopener">Jump Game - LeetCode</a></p>
+<blockquote>
+<p>……<br>Determine if you are able to reach the last index.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># Example 1</span><br><span class="line">Input: [2,3,1,1,4]</span><br><span class="line">Output: true</span><br><span class="line">Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.</span><br><span class="line"></span><br><span class="line"># Example 2</span><br><span class="line">Input: [3,2,1,0,4]</span><br><span class="line">Output: false</span><br><span class="line">Explanation: You will always arrive at index 3 no matter what. Its maximum</span><br><span class="line">             jump length is 0, which makes it impossible to reach the last index.</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="动态规划的思路"><a href="#动态规划的思路" class="headerlink" title="动态规划的思路"></a>动态规划的思路</h3><p>以下我们称数组中的一个位置为 “good index”，如果从该位置能够最终到达最后一个元素；否则，称之为 “bad index”。问题转化为：位置 0 是否为 “good index”。</p>
+<p>下面介绍用动态规划算法求解这个问题。通常，应用动态规划需要考虑以下步骤：</p>
+<ol>
+<li>尝试以回溯的方法解决问题。</li>
+<li>通过一个备忘表格来优化回溯算法（自顶向下法）。</li>
+<li>去掉不必要的递归部分。</li>
+<li>使用一些技巧来降低时间/空间复杂度。</li>
+</ol>
+<p><a href="https://xfge.github.io/2017/10/29/longest-valid-parentheses/">关于 LC32 的讨论</a> 中已经介绍了<strong>带备忘的自顶向下法</strong> 和 <strong>自底向上法</strong>。本文再以本题为例重新应用这两种方法。</p>
+<h4 id="从回溯开始"><a href="#从回溯开始" class="headerlink" title="从回溯开始"></a>从回溯开始</h4><p>回溯算法的思路是：从第一个位置开始，对于每一个它能够到达的位置，递归地判断从每个位置是否能够到达最后一个位置。回溯终止的条件是该位置已经是最后一个位置。当无法再进行跳跃（回溯算法中一次循环结束了都还没有到达最后位置）时，算法回溯。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canJumpFromPosition</span><span class="params">(<span class="keyword">int</span> position, <span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (position == nums.length - <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> furthestJump = Math.min(position + nums[position], nums.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> nextPosition = position + <span class="number">1</span>; nextPosition &lt;= furthestJump; nextPosition++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (canJumpFromPosition(nextPosition, nums)) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canJump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> canJumpFromPosition(<span class="number">0</span>, nums);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也可以对这段代码进行优化——从右往左地检查 <code>nextPosition</code>。然而，即使这样调整，最坏情况所需进行的计算依然不变（以下表格给出了一个最坏情况）。直觉上来看，这样优化后的算法将进行尽可能更远的跳跃以更快到达终点。需要改变的代码是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Old</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> nextPosition = position + <span class="number">1</span>; nextPosition &lt;= furthestJump; nextPosition++)</span><br><span class="line"><span class="comment">// New</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> nextPosition = furthestJump; nextPosition &gt; position; nextPosition--)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Index</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">nums</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<p>以上回溯算法的时间复杂度是 $O(2^n)$。从第一个位置跳到最后一个位置共有 $2^n$ 种可能。空间复杂度是 $O(n)$，但回溯算法本身需要额外的栈空间。 </p>
+<h4 id="自顶向下的动态规划"><a href="#自顶向下的动态规划" class="headerlink" title="自顶向下的动态规划"></a>自顶向下的动态规划</h4><p>带备忘的自顶向下动态规划方法可以看做是回溯算法的一个优化。其思想是一旦我们确定了一个位置是 “good/bad index”，只要保存这些信息，就不再需要每次重新计算。</p>
+<p>用数组 <code>memo</code> 作为存放每个位置是否为 “good/bad index” 的备忘，有三种类型：GOOD, BAD, UNKNOWN。以 <code>nums = [2, 4, 2, 1, 0, 2, 0]</code> 为例，它的备忘数组如下所示：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Index</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">nums</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">memo</td>
+<td style="text-align:center">G</td>
+<td style="text-align:center">G</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">G</td>
+<td style="text-align:center">G</td>
+</tr>
+</tbody>
+</table>
+<p>步骤是：</p>
+<ol>
+<li>刚开始时，除了最后一个元素为 GOOD，其他位置都为 UNKNOWN。</li>
+<li>这样修改回溯算法：每次迭代时首先检查该位置是否已知为 GOOD/BAD。<ol>
+<li>如果为 GOOD/BAD 那么返回 TRUE/FALSE。</li>
+<li>否则仍进行递归回溯。</li>
+</ol>
+</li>
+<li>一旦确定了当前位置的属性，将其记录在 <code>memo</code> 数组中。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Index &#123;</span><br><span class="line">    GOOD, BAD, UNKNOWN</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    Index[] memo;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canJumpFromPosition</span><span class="params">(<span class="keyword">int</span> position, <span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (memo[position] != Index.UNKNOWN) &#123;</span><br><span class="line">            <span class="keyword">return</span> memo[position] == Index.GOOD ? <span class="keyword">true</span> : <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> furthestJump = Math.min(position + nums[position], nums.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> nextPosition = position + <span class="number">1</span>; nextPosition &lt;= furthestJump; nextPosition++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (canJumpFromPosition(nextPosition, nums)) &#123;</span><br><span class="line">                memo[position] = Index.GOOD;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        memo[position] = Index.BAD;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canJump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        memo = <span class="keyword">new</span> Index[nums.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; memo.length; i++) &#123;</span><br><span class="line">            memo[i] = Index.UNKNOWN;</span><br><span class="line">        &#125;</span><br><span class="line">        memo[memo.length - <span class="number">1</span>] = Index.GOOD;</span><br><span class="line">        <span class="keyword">return</span> canJumpFromPosition(<span class="number">0</span>, nums);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自顶向下的动态规划算法的时间复杂度是 $O(n^2)$。对于每个位置，算法检查其右侧 <code>nums[i]</code> 个元素直到找到某个 GOOD 位置，<code>nums[i]</code> 至多为 $n$。空间复杂度为 $O(2n) = O(n)$。</p>
+<h4 id="自底向上的动态规划"><a href="#自底向上的动态规划" class="headerlink" title="自底向上的动态规划"></a>自底向上的动态规划</h4><p>通过将自顶向下改为自底向上地检查，可以不用递归完成计算。直观地说，就是当从右向左检查时，每一个位置的右侧所有位置都已经经过检查且记录在 <code>memo</code> 中。时间复杂度仍为 $O(n^2)$。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Index &#123;</span><br><span class="line">    GOOD, BAD, UNKNOWN</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canJump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        Index[] memo = <span class="keyword">new</span> Index[nums.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; memo.length; i++) &#123;</span><br><span class="line">            memo[i] = Index.UNKNOWN;</span><br><span class="line">        &#125;</span><br><span class="line">        memo[memo.length - <span class="number">1</span>] = Index.GOOD;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = nums.length - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">int</span> furthestJump = Math.min(i + nums[i], nums.length - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt;= furthestJump; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (memo[j] == Index.GOOD) &#123;</span><br><span class="line">                    memo[i] = Index.GOOD;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> memo[<span class="number">0</span>] == Index.GOOD;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="贪心算法-1"><a href="#贪心算法-1" class="headerlink" title="贪心算法"></a>贪心算法</h3><p>观察上述自底向上的动态规划算法，其实可以发现：在检查每个位置时，我们的目的是为了检查从该位置是否可以到达 GOOD 点。我们只需要用到最靠左侧的 GOOD index。也就是说，只要保存 “最左侧 GOOD index” 的索引，那么在每次检查时就不再需要挨个遍历寻找这个位置了。</p>
+<p>从右至左遍历时，对于每个位置我们检查是否可能跳到一个 GOOD index，即最左侧 GOOD index 是否包含在最远跳跃的范围中（<code>currPosition + nums[currPosition] &gt;= leftmostGoodIndex</code>）。如果存在这样的情况，那么当前位置也是 GOOD，且更新成为新的 “最左侧 GOOD index”。直到遍历到第一个位置，如果该位置也是 GOOD，那么返回 TRUE。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canJump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> lastPos = nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = nums.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i + nums[i] &gt;= lastPos) &#123;</span><br><span class="line">                lastPos = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> lastPos == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以 <code>nums = [9, 4, 2, 1, 0, 2, 0]</code> 为例说明。假定现在已经检查到最左侧位置。由于 <code>index == 1</code> 位置已经确定为 GOOD，我们就已经可以确定从最左侧为止可以跳到1位置。<code>nums[0]</code> 本身有多大已经无关紧要。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Index</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">nums</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">memo</td>
+<td style="text-align:center">U</td>
+<td style="text-align:center">G</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">G</td>
+<td style="text-align:center">G</td>
+</tr>
+</tbody>
+</table>
+<p>贪心算法的时间复杂度是 $O(n)$，空间复杂度是 $O(1)$。</p>
+<h3 id="一遍扫描确定最远距离"><a href="#一遍扫描确定最远距离" class="headerlink" title="一遍扫描确定最远距离"></a>一遍扫描确定最远距离</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">canJump</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">    m = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i, n <span class="keyword">in</span> enumerate(nums):</span><br><span class="line">        <span class="keyword">if</span> i &gt; m:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">        m = max(m, i+n)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
+          
+            <a href="/tags/贪心/" rel="tag"># 贪心</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/12/maximum-subarray/" rel="next" title="[LC53] Maximum Subarray / 动态规划 / 分治">
+                <i class="fa fa-chevron-left"></i> [LC53] Maximum Subarray / 动态规划 / 分治
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/12/merge-intervals/" rel="prev" title="[LC56] Merge Intervals 图连通性 / 排序">
+                [LC56] Merge Intervals 图连通性 / 排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Sheffield</p>
+              <p class="site-description motion-element" itemprop="description">Sheffield Ge 的技术博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xfge" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:xfge.cn@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#确定跳到最后一个元素的最小步数"><span class="nav-text">确定跳到最后一个元素的最小步数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用-BFS-算法"><span class="nav-text">应用 BFS 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#贪心算法"><span class="nav-text">贪心算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确定能否跳到最后一个元素"><span class="nav-text">确定能否跳到最后一个元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态规划的思路"><span class="nav-text">动态规划的思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#从回溯开始"><span class="nav-text">从回溯开始</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自顶向下的动态规划"><span class="nav-text">自顶向下的动态规划</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自底向上的动态规划"><span class="nav-text">自底向上的动态规划</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#贪心算法-1"><span class="nav-text">贪心算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一遍扫描确定最远距离"><span class="nav-text">一遍扫描确定最远距离</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sheffield</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
