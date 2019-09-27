@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://xfge.github.io/images/2017/10/rod-cutting-memoization.png">
 <meta property="og:image" content="https://xfge.github.io/images/2017/10/rod-cutting-bottom-up.png">
 <meta property="og:image" content="https://xfge.github.io/images/2017/10/rod-cutting-subproblem-graph.png">
-<meta property="og:updated_time" content="2018-10-16T15:28:57.823Z">
+<meta property="og:updated_time" content="2019-09-16T14:47:10.912Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[LC32] Longest Valid Parentheses &#x2F; 动态规划">
 <meta name="twitter:description" content="Longest Valid Parentheses - LeetCode  Given a string containing just the characters &amp;#39;(&amp;#39; and &amp;#39;)&amp;#39;, find the length of the longest valid (well-formed) parentheses substring.For &amp;quot;(()&amp;">
@@ -453,7 +453,7 @@
 <li>初始化<code>left</code>和<code>right</code>为0。</li>
 <li>首先从左至右地遍历每一个字符，如果遇到<code>&#39;(&#39;</code>，则<code>left</code>自增1；如果遇到<code>&#39;)&#39;</code>，则<code>&#39;right&#39;</code>自增1。</li>
 <li>当<code>left == right</code>时，当前匹配到一个有效子串，更新<code>currentMaxLenth</code>。当<code>right &gt; left</code>时，重新将<code>left</code>和<code>right</code>置为0。</li>
-<li>从右至左地进行类似操作。</li>
+<li>从右至左地进行一遍同样的扫描。</li>
 </ol>
 
       
@@ -576,7 +576,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="This is Sheffield!">
 <meta property="og:description" content="Generate Parentheses - LeetCode  Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-16T15:28:57.822Z">
+<meta property="og:updated_time" content="2019-09-16T14:08:53.944Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[LC22] Generate Parentheses &#x2F; 回溯">
 <meta name="twitter:description" content="Generate Parentheses - LeetCode  Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.">
@@ -391,11 +391,12 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">generateParenthesis</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; ans = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">            ans.add(<span class="string">""</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> c = <span class="number">0</span>; c &lt; n; ++c)</span><br><span class="line">                <span class="keyword">for</span> (String left: generateParenthesis(c))</span><br><span class="line">                    <span class="keyword">for</span> (String right: generateParenthesis(n-<span class="number">1</span>-c))</span><br><span class="line">                        ans.add(<span class="string">"("</span> + left + <span class="string">")"</span> + right);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>时间和空间复杂度均为 $O \left ( \frac{4^n}{\sqrt{n}} \right )$。</p>
-<h2 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h2><p>回溯方法将一个括号串添加到 <code>ans</code> 中当且仅当这个括号串有效。因此，回溯方法需要维持已经放置的 <code># of (</code> 和 <code># of )</code>。</p>
+<h2 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h2><p>回溯方法通过 DFS 的方式不断构造字符串，当括号串合法时（以长度达到 <code>2n</code> 或右括号数目达到 <code>n</code> 为停止条件）添加到 <code>ans</code> 中。回溯方法需要维持已经放置的左右括号数目用于构造<strong>下一个</strong>括号串。</p>
 <ol>
-<li>如果<strong>仍可放置</strong> <code>(</code>，那么放置 <code>(</code>；</li>
-<li>如果 <code># of ( &gt; # of )</code>，那么放置 <code>)</code>。</li>
+<li>如果 <code>(</code> 未超过 <code>n</code>，可以放置 <code>(</code>；</li>
+<li>如果左括号数大于右括号数，可以放置 <code>)</code>。</li>
 </ol>
+<p>上述两个<strong>候选字符串</strong>可以同时成立，或只有一个成立。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">generateParenthesis</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; ans = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        backtrack(ans, <span class="string">""</span>, <span class="number">0</span>, <span class="number">0</span>, n);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(List&lt;String&gt; ans, String cur, <span class="keyword">int</span> open, <span class="keyword">int</span> close, <span class="keyword">int</span> max)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (str.length() == max * <span class="number">2</span>) &#123;</span><br><span class="line">            ans.add(cur);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (open &lt; max)</span><br><span class="line">            backtrack(ans, cur+<span class="string">"("</span>, open+<span class="number">1</span>, close, max);</span><br><span class="line">        <span class="keyword">if</span> (close &lt; open)</span><br><span class="line">            backtrack(ans, cur+<span class="string">")"</span>, open, close+<span class="number">1</span>, max);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>时间复杂度与上述方法相同。</p>
 
@@ -519,7 +520,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
